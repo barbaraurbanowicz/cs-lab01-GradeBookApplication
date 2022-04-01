@@ -40,7 +40,23 @@ namespace GradeBook.UserInterfaces
                 return;
             }
             var name = parts[1];
+            var type = parts[2];
+          
             BaseGradeBook gradeBook = new BaseGradeBook(name);
+
+            if (type == "standard")
+            { 
+                gradeBook = new StandardGradeBook(name); 
+            }
+            if (type =="ranked")
+            {
+                gradeBook = new RankedGradeBook(name);
+            }
+            else
+            {
+                Console.WriteLine(type + " is not a supported type of gradebook, please try again");
+            }
+
             Console.WriteLine("Created gradebook {0}.", name);
             GradeBookUserInterface.CommandLoop(gradeBook);
         }
