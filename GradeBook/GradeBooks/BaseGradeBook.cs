@@ -109,20 +109,32 @@ namespace GradeBook.GradeBooks
 
         public virtual double GetGPA(char letterGrade, StudentType studentType)
         {
+            var GPA = 0;
             switch (letterGrade)
             {
                 case 'A':
-                    return 4;
+                    GPA = 4;
+                    break;
                 case 'B':
-                    return 3;
+                    GPA = 3;
+                    break;
                 case 'C':
-                    return 2;
+                    GPA = 2;
+                    break;
                 case 'D':
-                    return 1;
+                    GPA = 1;
+                    break;
                 case 'F':
-                    return 0;
+                    GPA = 0;
+                    break;
             }
-            return 0;
+
+            if (IsWeighted && (studentType == StudentType.Honors || studentType == StudentType.DualEnrolled))
+                GPA++;
+
+            return GPA;
+
+
         }
 
         public virtual void CalculateStatistics()
@@ -173,7 +185,7 @@ namespace GradeBook.GradeBooks
                         break;
                 }
             }
-
+           
             // #todo refactor into it's own method with calculations performed here
             Console.WriteLine("Average Grade of all students is " + (allStudentsPoints / Students.Count));
             if (campusPoints != 0)
@@ -197,7 +209,7 @@ namespace GradeBook.GradeBooks
             var student = Students.FirstOrDefault(e => e.Name == name);
             student.LetterGrade = GetLetterGrade(student.AverageGrade);
             student.GPA = GetGPA(student.LetterGrade, student.Type);
-
+            
             Console.WriteLine("{0} ({1}:{2}) GPA: {3}.", student.Name, student.LetterGrade, student.AverageGrade, student.GPA);
             Console.WriteLine();
             Console.WriteLine("Grades:");
